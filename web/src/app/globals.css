@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255; /* 白色文字 */
+  --background-start-rgb: 14, 27, 43; /* 深藍色背景起始 */
+  --background-end-rgb: 2, 0, 36; /* 深藍色背景結束 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255; /* 白色文字 */
+    --background-start-rgb: 14, 27, 43; /* 深藍色背景起始 */
+    --background-end-rgb: 2, 0, 36; /* 深藍色背景結束 */
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb)); /* 使用自定义的前景色 */
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb)); /* 使用自定义的背景渐变 */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance; /* 示例：保持原样 */
+  }
+}
