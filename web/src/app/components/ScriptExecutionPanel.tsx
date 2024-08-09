@@ -24,11 +24,11 @@ const ScriptExecutionPanel: React.FC<ScriptExecutionPanelProps> = ({
       setOutput("");
 
       axios
-        .post(DJANGO_URL(`web/api/scripts/execute/${selectedScript.id}/`), {
+        .post(DJANGO_URL(`web/api/scripts/${selectedScript.id}/execute/`), {
           scriptName: selectedScript.name,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           setExecutionStatus("success"); // 設定狀態為成功
           setOutput(response.data.stdout); // 獲取標準輸出
           onExecutionComplete(response.data.result);

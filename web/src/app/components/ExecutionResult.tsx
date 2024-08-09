@@ -23,9 +23,7 @@ const ExecutionResult: React.FC<ExecutionResultProps> = ({ result }) => {
       </p>
       <p className="text-lg font-semibold text-gray-300 overflow-auto">
         path:
-        <span className="text-blue-300 overflow-auto">
-          {result.output_log_file_path}
-        </span>
+        <span className="text-blue-300 overflow-auto">{result.log_path}</span>
       </p>
       <div
         ref={outputRef}

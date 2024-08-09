@@ -19,6 +19,11 @@ class ScriptExecutionAdmin(admin.ModelAdmin):
     # search_fields = ('script__name', 'pid', 'status')  # 可搜索的字段
     # list_filter = ('status',)  # 篩選的字段
     pass
+
+
+@admin.register(ScriptCommand)
+class ScriptExecutionAdmin(admin.ModelAdmin):
+    pass
     
     
     
