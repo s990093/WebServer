@@ -19,6 +19,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "font-awesome": "^4.7.0",
     "intersection-observer": "^0.12.2",
     "lightgallery": "^2.7.2",
