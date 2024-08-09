@@ -1,16 +1,15 @@
-export const DJANGO_IP = "127.0.0.1";
-export const DJANGO_PORT = "8000";
-export const NIGIX_PORT = "8001";
-export const NIGIX_T_PORT = "8002";
+import { getFileExtension, isVideo } from "../../helper/func";
 
-export const ImageUrl = (file: string): string => {
-  return `http://${DJANGO_IP}:${NIGIX_PORT}/${file}`;
-};
+// 加載 dotenv 套件
+require("dotenv").config();
 
-export const ThumbnailImageUrl = (file: string): string => {
-  // return `http://${DJANGO_IP}:${NIGIX_PORT}/${file}?preview=true`;
-  return `http://${DJANGO_IP}:${NIGIX_T_PORT}/${file}`;
-};
+// 從環境變量中讀取
+// 從環境變量中讀取，如果不存在則使用默認值
+// 從環境變量中讀取，如果不存在則使用默認值
+export const DJANGO_IP = process.env.NEXT_PUBLIC_DJANGO_IP || "192.168.0.135";
+export const DJANGO_PORT = process.env.NEXT_PUBLIC_DJANGO_PORT || "8000";
+export const NGINX_PORT = process.env.NEXT_PUBLIC_NGINX_PORT || "8001";
+export const NGINX_T_PORT = process.env.NEXT_PUBLIC_NGINX_T_PORT || "8002";
 
 export const DJANGO_URL = (url: string): string => {
   return `http://${DJANGO_IP}:${DJANGO_PORT}/${url}`;

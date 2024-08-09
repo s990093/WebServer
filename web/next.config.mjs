@@ -9,7 +9,7 @@ const nextConfig = {
             },
             {
                 protocol: 'http',
-                hostname: '192.168.0.135',
+                hostname: '49.213.238.75',
                 port: '8000',
             },
             {
