@@ -45,11 +45,10 @@ def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tup
     # 构建要执行的命令
     command = (
         f'cd /d "{path}" && '
-        f'start /b cmd /c "{cmd} > "{log_path}" 2>&1 & echo !^! > "{pid_file}" && '
-        f'powershell -command "Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
-        f'{{ (Get-Content \'{log_path}\' -Tail {log_size}) | Set-Content \'{log_path}\' }}"'
+        f'start /b powershell -command "& {{ {cmd} > \'{log_path}\' 2>&1; echo $pid > \'{pid_file}\'; '
+        f'Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
+        f'{{ Get-Content \'{log_path}\' -Tail {log_size} | Set-Content \'{log_path}\' }} }}"'
     )
-
     # 启动命令
     subprocess.Popen(command, shell=True)
 
