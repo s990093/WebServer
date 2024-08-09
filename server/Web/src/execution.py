@@ -43,12 +43,14 @@ def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tup
     pid_file = os.path.join(path, "pidfile.tmp")
 
     # 构建要执行的命令
-    command = (
-        f'cd /d "{path}" && '
-        f'start /b powershell -command "& {{ {cmd} > \'{log_path}\' 2>&1; echo $pid > \'{pid_file}\'; '
-        f'Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
-        f'{{ Get-Content \'{log_path}\' -Tail {log_size} | Set-Content \'{log_path}\' }} }}"'
-    )
+    # command = (
+    #     f'cd /d "{path}" && '
+    #     f'start /b powershell -command "& {{ {cmd} > \'{log_path}\' 2>&1; echo $pid > \'{pid_file}\'; '
+    #     f'Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
+    #     f'{{ Get-Content \'{log_path}\' -Tail {log_size} | Set-Content \'{log_path}\' }} }}"'
+    # )
+    command = f'start /B cmd /c "echo %random% > {pid_file} & {cmd} >> {log_path} 2>&1"'
+
     # 启动命令
     subprocess.Popen(command, shell=True)
 
