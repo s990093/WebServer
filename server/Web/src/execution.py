@@ -2,8 +2,7 @@ import os
 import subprocess
 import time
 import psutil
-import platform
-import fcntl
+
 import signal
 from typing import Tuple
 
