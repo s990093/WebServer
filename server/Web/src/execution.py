@@ -54,22 +54,21 @@ def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tup
     command = f'start /B cmd /c "{cmd} >> {log_path} 2>&1"'
 
     # 在指定目錄中背景執行命令
-    process = subprocess.Popen(command, cwd=path, shell=True)
+    subprocess.Popen(command, cwd=path, shell=True)
     
     # 等待命令啟動
     time.sleep(DELAY_TIME)
-    
-    # 使用 wmic 來查找最近啟動的 cmd 進程的 PID
-    find_pid_cmd = f'wmic process where "CommandLine like \'%{cmd}%\'" get ProcessId'
-    pid_output = subprocess.check_output(find_pid_cmd, shell=True).decode()
 
-    # 從輸出中提取 PID
-    pids = [int(line.strip()) for line in pid_output.strip().split() if line.strip().isdigit()]
-    
-    # 獲取最新的 PID
-    pid = pids[-1] if pids else None
+    # 獲取當前所有進程
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        try:
+            # 檢查進程命令行是否包含要執行的命令
+            if cmd in proc.info['cmdline']:
+                return proc.info['pid'], cmd  # 返回 PID 和命令
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
 
-    return pid, command
+    return None, cmd  # 如果找不到進程，返回 None
 
 def terminate_by_macos(pid: int):
     """
