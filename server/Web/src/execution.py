@@ -37,32 +37,37 @@ def exe_by_macos(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tuple
     return pid, command
 
 def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tuple[int, str]:
+    """
+    在 Windows 上背景執行命令並記錄輸出，同時返回命令的 PID。
+
+    :param path: 執行命令的目錄路徑。
+    :param cmd: 要執行的命令。
+    :param log_path: 日誌檔案路徑。
+    :param log_size: 日誌檔案的最大大小（MB）。預設為5MB。
+    :return: 命令的 PID 和執行的命令字符串。
+    """
     
+    # 確保日誌目錄存在
+    os.makedirs(os.path.dirname(log_path), exist_ok=True)
+
+    # 構建實際要執行的命令
+    command = f'start /B cmd /c "{cmd} >> {log_path} 2>&1"'
+
+    # 在指定目錄中背景執行命令
+    process = subprocess.Popen(command, cwd=path, shell=True)
     
-    # 使用一个临时文件来保存实际命令的PID
-    pid_file = os.path.join(path, "pidfile.tmp")
-
-    # 构建要执行的命令
-    # command = (
-    #     f'cd /d "{path}" && '
-    #     f'start /b powershell -command "& {{ {cmd} > \'{log_path}\' 2>&1; echo $pid > \'{pid_file}\'; '
-    #     f'Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
-    #     f'{{ Get-Content \'{log_path}\' -Tail {log_size} | Set-Content \'{log_path}\' }} }}"'
-    # )
-    command = f'start /B cmd /c "echo %random% > {pid_file} & {cmd} >> {log_path} 2>&1"'
-
-    # 启动命令
-    subprocess.Popen(command, shell=True)
-
-    # 等待命令启动并写入PID文件
+    # 等待命令啟動
     time.sleep(DELAY_TIME)
+    
+    # 使用 wmic 來查找最近啟動的 cmd 進程的 PID
+    find_pid_cmd = f'wmic process where "CommandLine like \'%{cmd}%\'" get ProcessId'
+    pid_output = subprocess.check_output(find_pid_cmd, shell=True).decode()
 
-    # 读取PID文件以获取实际命令的PID
-    with open(pid_file, "r") as file:
-        pid = int(file.read().strip())
-
-    # 删除临时PID文件
-    os.remove(pid_file)
+    # 從輸出中提取 PID
+    pids = [int(line.strip()) for line in pid_output.strip().split() if line.strip().isdigit()]
+    
+    # 獲取最新的 PID
+    pid = pids[-1] if pids else None
 
     return pid, command
 
