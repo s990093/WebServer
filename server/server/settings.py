@@ -39,9 +39,13 @@ CORS_ORIGIN_WHITELIST = [
     'http://192.168.0.135:3000',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3001']
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3001']
 
-
+CSRF_COOKIE_SAMESITE = 'None'  # 允许跨站请求伪造（CSRF）
+CSRF_COOKIE_SECURE = False  # 如果没有 HTTPS，设置为 False
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = False
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
@@ -64,6 +68,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+# settings.py
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # 允许来自 Next.js 的请求
+]
 
 
 # Application definition
@@ -82,8 +92,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
-
+    # 'iframe',
     "Web",
+    "Box",
 ]
 
 
@@ -92,6 +103,7 @@ INSTALLED_APPS = [
 # MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
+    'Web.middleware.PublicAccessControlMiddleware',  # 添加你的自定義中間件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,9 +112,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'Web.middleware.PublicAccessControlMiddleware',  # 添加你的自定義中間件
+    # 'iframe.middleware.IframeMiddleware',
 
 ]
+
 
 ROOT_URLCONF = 'server.urls'
 APPEND_SLASH=False 

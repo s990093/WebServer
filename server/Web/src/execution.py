@@ -42,13 +42,7 @@ def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tup
     # 使用一个临时文件来保存实际命令的PID
     pid_file = os.path.join(path, "pidfile.tmp")
 
-    # 构建要执行的命令
-    # command = (
-    #     f'cd /d "{path}" && '
-    #     f'start /b powershell -command "& {{ {cmd} > \'{log_path}\' 2>&1; echo $pid > \'{pid_file}\'; '
-    #     f'Start-Sleep -Seconds 1; if ((Get-Item \'{log_path}\').length -gt {log_size}) '
-    #     f'{{ Get-Content \'{log_path}\' -Tail {log_size} | Set-Content \'{log_path}\' }} }}"'
-    # )
+ 
     command = f'start /B cmd /c "echo %random% > {pid_file} & {cmd} >> {log_path} 2>&1"'
 
     # 启动命令
@@ -57,14 +51,14 @@ def exe_by_windows(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tup
     # 等待命令启动并写入PID文件
     time.sleep(DELAY_TIME)
 
-    # 读取PID文件以获取实际命令的PID
-    with open(pid_file, "r") as file:
-        pid = int(file.read().strip())
+    # # 读取PID文件以获取实际命令的PID
+    # with open(pid_file, "r") as file:
+    #     pid = int(file.read().strip())
 
-    # 删除临时PID文件
-    os.remove(pid_file)
+    # # 删除临时PID文件
+    # os.remove(pid_file)
 
-    return pid, command
+    return  command
 
 def terminate_by_macos(pid: int):
     """

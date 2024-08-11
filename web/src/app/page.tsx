@@ -44,8 +44,22 @@ const Home: React.FC = () => {
 
     fetchData();
   }, [selectedScript]);
+
   const handleCloseErrorCard = () => {
     setErrorMessage(null);
+  };
+
+  const onRefresh = async () => {
+    if (selectedScript !== undefined) {
+      try {
+        const response = await axios.get<ExecutionDetail>(
+          DJANGO_URL(`web/api/scripts/${selectedScript.id}/log/`)
+        );
+        Setresult(response.data);
+      } catch (error) {
+        setErrorMessage(String(error));
+      }
+    }
   };
 
   const handleChangeScriptStatus = (scriptId: number, status: string) => {
@@ -79,7 +93,7 @@ const Home: React.FC = () => {
           />
           <div className="my-4 border-t border-gray-700" /> */}
 
-          {result && <ExecutionResult result={result} />}
+          {result && <ExecutionResult result={result} onRefresh={onRefresh} />}
         </div>
       </div>
       {errorMessage && (

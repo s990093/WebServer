@@ -1,5 +1,3 @@
-import { getFileExtension, isVideo } from "../../helper/func";
-
 // 加載 dotenv 套件
 require("dotenv").config();
 

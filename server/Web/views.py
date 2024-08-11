@@ -20,7 +20,13 @@ class ScriptViewSet(viewsets.ModelViewSet):
             log_path = os.path.join(script.path, f"{script.id}.log")
             
             if platform.system() == "Windows":
-                pid, command = exe_by_windows(script.path, script.cmd, log_path)
+                command = exe_by_windows(script.path, script.cmd, log_path)
+                # 读取PID文件以获取实际命令的PID
+                with open(log_path, "r") as file:
+                    pid = int(file.read().strip())
+
+                # 删除临时PID文件
+                # os.remove(pid_file)
             elif platform.system() == "Darwin":  # "Darwin" is the identifier for macOS
                 pid, command = exe_by_macos(script.path, script.cmd, log_path)
             else:
@@ -52,7 +58,7 @@ class ScriptViewSet(viewsets.ModelViewSet):
                 terminate_process(exe.pid, exe.output_log_file_path)
                 script.status = 'stopped'
                 script.save()
-                exe.delete()  # 删除 ScriptExecution 对象
+                exe.delete()
                 return Response({"detail": "Script stopped and execution record deleted successfully."}, status=status.HTTP_200_OK)
             else:
                 return Response({"detail": "Script is not running."}, status=status.HTTP_400_BAD_REQUEST)
@@ -72,6 +78,3 @@ class ScriptViewSet(viewsets.ModelViewSet):
             return Response(log_data, status=status.HTTP_200_OK)
         except ScriptExecution.DoesNotExist:
             return Response({"detail": "ScriptExecution not found."}, status=status.HTTP_404_NOT_FOUND)
-
-
-        

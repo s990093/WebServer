@@ -5,6 +5,7 @@ import "./globals.css";
 import { Sidebar } from "./components/Sidebar";
 import { ScrollPositionProvider } from "./components/ScrollRestorationContext";
 import ScrollRestoration from "./components/ScrollRestoration";
+import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         {/* <ScrollRestoration> */}
         <body className={inter.className}>
           <div>
+            <Navbar />
             {children}
             {/* <div className="fixed top-0 left-0 ">
             <Sidebar />
