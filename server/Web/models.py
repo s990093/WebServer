@@ -53,3 +53,16 @@ class ScriptCommand(models.Model):
 
     def __str__(self):
         return f"{self.execution.script.name} - {self.command} at {self.executed_at}"
+class ScriptHistory(models.Model):
+    execution = models.ForeignKey(ScriptExecution, on_delete=models.CASCADE, related_name='history')
+    status = models.CharField(max_length=20)
+    command = models.CharField(max_length=300)
+    output_log_file_path = models.CharField(max_length=255)
+    pid = models.IntegerField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"History of {self.execution.script.name} at {self.updated_at}"
+
+    class Meta:
+        ordering = ['-updated_at']

@@ -117,6 +117,23 @@ def terminate_process(pid: int, log_path: str):
         print(f"An error occurred while terminating process {pid}: {e}")
     except Exception as ex:
         print(f"An error occurred while deleting log file {log_path}: {ex}")
+        
+def exe_by_linux(path: str, cmd: str, log_path: str, log_size: int = 5) -> Tuple[int, str]:
+    # Construct the full command to be executed with nohup and run it in the background
+    full_command = f"cd {path} && nohup {cmd} > /dev/null 2>&1 & echo $!"
+    
+    # Execute the command
+    process = subprocess.Popen(full_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    # Get the PID from the command's output
+    stdout, stderr = process.communicate()
+    pid = int(stdout.strip())
+    
+    # Log the PID to the log file
+    with open(log_path, "w") as log_file:
+        log_file.write(str(pid))
+    
+    return pid, full_command
 
 def get_log_by_pid(pid: int, log_path: str) -> dict:
     data = {"pid": pid, "log_path": log_path}

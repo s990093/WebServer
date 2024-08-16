@@ -246,3 +246,37 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "cyborg",
     "dark_mode_theme": "cyborg",
 }
+
+
+#============================
+#
+# self middleware settings
+#
+#============================
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost',
+#     'http://127.0.0.1',
+#     'http://49.213.238.75'
+# ]
+
+# CORS_ALLOW_METHODS = [
+#     'GET',
+#     'POST',
+#     'PUT',
+#     'DELETE',
+#     'OPTIONS'
+# ]
+
+# CORS_ALLOW_HEADERS = [
+#     'Content-Type',
+#     'Authorization'
+# ]
+
+# CORS_MAX_AGE = 86400
+
+# ALLOWED_HOSTS_FOR_FRAMES = [
+#     'localhost',
+#     '127.0.0.1',
+#     '49.213.238.75'
+# ]

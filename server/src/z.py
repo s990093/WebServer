@@ -12,3 +12,5 @@ def add_extension_to_files(directory, extension=".jpeg"):
 if __name__ == "__main__":
     target_directory = "/Users/hungwei/Downloads/"
     add_extension_to_files(target_directory)
+
+    

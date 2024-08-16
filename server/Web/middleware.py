@@ -1,29 +1,38 @@
-
-
 from django.utils.deprecation import MiddlewareMixin
-
-from django.utils.deprecation import MiddlewareMixin
+from django.conf import settings
 
 class PublicAccessControlMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         pass
 
+
     def process_response(self, request, response):
-        # 添加 CORS 相关的响应头
-        response['Access-Control-Allow-Origin'] = '*'  # 允许所有来源
-        response['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response['Access-Control-Max-Age'] = 86400
 
-        # 检查请求来源
-        allowed_hosts = ['localhost', '127.0.0.1', '49.213.238.75']  # 允许的来源
-        request_host = request.get_host().split(':')[0]  # 获取请求的主机名
+        # CORS settings from Django settings
+        cors_origin = getattr(settings, 'CORS_ALLOWED_ORIGINS', '*')
+        cors_methods = getattr(settings, 'CORS_ALLOW_METHODS', ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+        cors_headers = getattr(settings, 'CORS_ALLOW_HEADERS', ['Content-Type', 'Authorization'])
+        cors_max_age = getattr(settings, 'CORS_MAX_AGE', 86400)
 
-        # 根据请求来源设置 X-Frame-Options
-        if request_host in allowed_hosts:
-            response['X-Frame-Options'] = 'ALLOW-FROM http://{}'.format(request_host)  # 允许来自本地或特定 IP 的请求
+        # Set CORS headers
+        if isinstance(cors_origin, str) and cors_origin == '*':
+            response['Access-Control-Allow-Origin'] = '*'
         else:
-            response['X-Frame-Options'] = 'DENY'  # 拒绝其他来源
+            response['Access-Control-Allow-Origin'] = ', '.join(cors_origin)
+        
+        response['Access-Control-Allow-Methods'] = ', '.join(cors_methods)
+        response['Access-Control-Allow-Headers'] = ', '.join(cors_headers)
+        response['Access-Control-Max-Age'] = str(cors_max_age)
+
+        # Check request origin for X-Frame-Options
+        allowed_hosts = getattr(settings, 'ALLOWED_HOSTS_FOR_FRAMES', ['localhost', '127.0.0.1', '49.213.238.75'])
+        request_host = request.get_host().split(':')[0]
+
+        # Set X-Frame-Options based on allowed hosts
+        if request_host in allowed_hosts:
+            response['X-Frame-Options'] = f'ALLOW-FROM http://{request_host}'
+        else:
+            response['X-Frame-Options'] = 'DENY'
 
         return response

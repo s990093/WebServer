@@ -1,0 +1,8 @@
+Django==5.0.6
+django-autocomplete-light==3.11.0
+django-cors-headers==4.3.1
+django-jazzmin==2.6.0
+django-listing==0.7.33
+djangorestframework==3.15.1
+drf-yasg==1.21.7
+sqlparse==0.5.0  
