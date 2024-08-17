@@ -12,9 +12,9 @@ services:
     #   - db
 
   nextjs:
-    build: ./Web
+    build: ./web
     volumes:
-      - ./Web:/app
+      - ./web:/app
     ports:
       - "3000:3000"
     # environment:
