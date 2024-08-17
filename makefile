@@ -6,4 +6,4 @@ git:
 
 
 build:
-	docker-compose up --build --no-cache
+	docker-compose up -d --build
