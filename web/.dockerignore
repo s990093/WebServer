@@ -1,12 +1,9 @@
-# 排除 node_modules 目录
+Dockerfile
+.dockerignore
 node_modules
-
-# 排除所有日志文件
-*.log
-
-# 排除 Git 目录
+npm-debug.log
+README.md
+.next
+!.next/static
+!.next/standalone
 .git
-
-# 其他可能需要排除的文件或目录
-.DS_Store
-*.md
