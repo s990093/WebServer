@@ -6,6 +6,8 @@ services:
       - ./server:/app
     ports:
       - "8000:8000"
+    restart: always # <-- 這一行
+
     # env_file:
     #   - ./server/.env
     # depends_on:
@@ -16,11 +18,13 @@ services:
     volumes:
       - ./web:/app
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       - NODE_ENV=production
     depends_on:
       - django
+    restart: always # <-- 這一行
+
 
   # db:
   #   image: postgres:15
