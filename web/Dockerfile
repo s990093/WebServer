@@ -68,4 +68,5 @@ ENV PORT=3000
 # Install additional dependencies (e.g., express)
 # RUN yarn add express
 
-CMD HOSTNAME="0.0.0.0" node server.js
+#CMD HOSTNAME="0.0.0.0" node server.js
+CMD ["yarn", "start"]
