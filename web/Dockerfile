@@ -14,7 +14,7 @@ RUN yarn install
 COPY . .
 
 # Build the application
-RUN yarn build
+# RUN yarn build
 
 # Expose the port the app runs on
 EXPOSE 3000
