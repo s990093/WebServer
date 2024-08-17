@@ -21,5 +21,5 @@ COPY . .
 # Expose port and start the server
 EXPOSE 3000
 
-RUN yarn build
+# RUN yarn build
 CMD ["yarn", "start"]
