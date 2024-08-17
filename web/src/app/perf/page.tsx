@@ -1,53 +1,42 @@
+"use client";
 import os from "os";
+import { useEffect, useState } from "react";
+import { PerformanceDataType } from "./PerformanceData";
 
-export const PerformanceData = async () => {
-  const performanceData = {
-    cpuModel: os.cpus()[0].model,
-    cpuCores: os.cpus().length,
-    totalMemory: os.totalmem() / 1024 / 1024 / 1024, // GB
-    freeMemory: os.freemem() / 1024 / 1024 / 1024, // GB
-    osType: os.type(),
-    loadAvg: os.loadavg(),
-    uptime: os.uptime(),
-  };
+const Page: React.FC = () => {
+  const [data, setData] = useState<PerformanceDataType>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const performanceData = {
+        cpuModel: os.cpus()[0].model,
+        cpuCores: os.cpus().length,
+        totalMemory: os.totalmem() / 1024 / 1024 / 1024, // GB
+        freeMemory: os.freemem() / 1024 / 1024 / 1024, // GB
+        osType: os.type(),
+        loadAvg: os.loadavg(),
+        uptime: os.uptime(),
+      };
+      setData(performanceData);
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data) return <div>Loading...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        電腦效能資訊
-      </h1>
-      <div className="space-y-4">
-        <p className="text-lg">
-          <strong className="text-gray-900">CPU 型號:</strong>
-          {performanceData.cpuModel}
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">CPU 核心數:</strong>{" "}
-          {performanceData.cpuCores}
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">總內存:</strong>{" "}
-          {performanceData.totalMemory.toFixed(2)} GB
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">可用內存:</strong>{" "}
-          {performanceData.freeMemory.toFixed(2)} GB
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">操作系統:</strong>{" "}
-          {performanceData.osType}
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">載入平均值:</strong>{" "}
-          {performanceData.loadAvg.join(", ")}
-        </p>
-        <p className="text-lg">
-          <strong className="text-gray-900">系統運行時間:</strong>{" "}
-          {Math.floor(performanceData.uptime / 60)} 分鐘
-        </p>
-      </div>
+    <div>
+      <h1>Performance Data</h1>
+      <p>CPU Model: {data.cpuModel}</p>
+      <p>CPU Cores: {data.cpuCores}</p>
+      <p>Total Memory: {data.totalMemory.toFixed(2)} GB</p>
+      <p>Free Memory: {data.freeMemory.toFixed(2)} GB</p>
+      <p>OS Type: {data.osType}</p>
+      {/* <p>Load Average: {data.loadAvg.join(", ")}</p>
+      <p>Uptime: {data.uptime} seconds</p> */}
     </div>
   );
 };
 
-export default PerformanceData;
+export default Page;

@@ -1,4 +1,4 @@
-export type PerformanceData = {
+export type PerformanceDataType = {
   cpuModel: string;
   cpuCores: number;
   totalMemory: number;

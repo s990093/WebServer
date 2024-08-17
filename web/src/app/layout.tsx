@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { Sidebar } from "./components/Sidebar";
 import { ScrollPositionProvider } from "./components/ScrollRestorationContext";
-import ScrollRestoration from "./components/ScrollRestoration";
 import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });

@@ -105,17 +105,18 @@ INSTALLED_APPS = [
 # MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
-    'Web.middleware.PublicAccessControlMiddleware',  # 添加你的自定義中間件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # corsheaders
     'corsheaders.middleware.CorsMiddleware',
     # 'iframe.middleware.IframeMiddleware',
-
+    # self
+    'Web.middleware.PublicAccessControlMiddleware', 
 ]
 
 
@@ -249,6 +250,8 @@ JAZZMIN_UI_TWEAKS = {
     "dark_mode_theme": "cyborg",
 }
 
+CSRF_COOKIE_SECURE = False  # 在开发环境中
+SESSION_COOKIE_SECURE = False  # 在开发环境中
 
 #============================
 #
