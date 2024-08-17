@@ -17,8 +17,8 @@ services:
       - ./web:/app
     ports:
       - "3000:3000"
-    # environment:
-    #   - NODE_ENV=production
+    environment:
+      - NODE_ENV=production
     depends_on:
       - django
 
