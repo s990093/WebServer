@@ -19,8 +19,8 @@ services:
       - ./web:/app
     ports:
       - "3003:3003"
-    environment:
-      - NODE_ENV=production
+    # environment:
+    #   - NODE_ENV=production
     depends_on:
       - django
     restart: always # <-- 這一行
