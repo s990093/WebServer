@@ -63,4 +63,9 @@ ENV PORT=3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
+
+# fix
+# Install additional dependencies (e.g., express)
+RUN yarn add express
+
 CMD HOSTNAME="0.0.0.0" node server.js
